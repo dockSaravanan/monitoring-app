@@ -16,11 +16,15 @@ data:
     [data]
       dir = "/data/data"
       wal-dir = "/data/wal"
+      wal-fsync-delay = "0s"
+      index-version = "inmem"
       query-log-enabled = true
-      cache-max-memory-size = 1073741824
-      cache-snapshot-memory-size = 26214400
-      cache-snapshot-write-cold-duration = "10m0s"
-      compact-full-write-cold-duration = "4h0m0s"
+      cache-max-memory-size = "1g"
+      cache-snapshot-memory-size = "25m"
+      cache-snapshot-write-cold-duration = "10m"
+      compact-full-write-cold-duration = "4h"
+      max-concurrent-compactions = 0
+      max-index-log-file-size = "1m"
       max-series-per-database = 1000000
       max-values-per-tag = 100000
       trace-logging-enabled = false
@@ -36,18 +40,12 @@ data:
 
     [retention]
       enabled = true
-      check-interval = "30m0s"
+      check-interval = "30m"
 
     [shard-precreation]
       enabled = true
-      check-interval = "10m0s"
-      advance-period = "30m0s"
-
-    [admin]
-      enabled = true
-      bind-address = ":8083"
-      https-enabled = false
-      https-certificate = "/etc/ssl/influxdb.pem"
+      check-interval = "10m"
+      advance-period = "30m"
 
     [monitor]
       store-enabled = true
@@ -69,15 +67,21 @@ data:
       log-enabled = true
       write-tracing = false
       pprof-enabled = true
-      https-enabled = false
+      https-enabled = true
       https-certificate = "/etc/ssl/influxdb.pem"
-      https-private-key = ""
+      https-private-key = "/etc/ssl/influxdb.key"
       max-row-limit = 0
       max-connection-limit = 0
       shared-secret = ""
       realm = "InfluxDB"
       unix-socket-enabled = false
       bind-socket = "/var/run/influxdb.sock"
+      max-body-size = 25000000
+
+    [ifql]
+      enabled = false
+      log-enabled = true
+      bind-address = ":8082"
 
     [[graphite]]
       enabled = false
@@ -132,4 +136,5 @@ data:
     [continuous_queries]
       log-enabled = true
       enabled = true
+      query-stats-enabled = false
       run-interval = "1s"
